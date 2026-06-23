@@ -24,6 +24,11 @@ jobs:
           path: mapmaker
           repository: AnatomicMaps/flatmap-maker
 
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: 3.12
+
       - name: Install Ubuntu packages
         uses: ConorMacBride/install-package@v1
         with:
@@ -38,6 +43,7 @@ jobs:
         run: |
           cd mapmaker
           uv sync
+          pip install .
 
       - name: Download zip
         run: |
@@ -46,7 +52,7 @@ jobs:
 
       - name: Run mapmaker
         run: |
-          uv run mapmaker \
+          mapmaker \
             --output ./flatmaps \
             --source https://github.com/AnatomicMaps/rat-flatmap.git \
             --commit curation \
