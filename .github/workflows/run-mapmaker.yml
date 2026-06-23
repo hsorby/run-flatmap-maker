@@ -1,0 +1,53 @@
+name: mapmaker
+
+on:
+  workflow_dispatch:
+    inputs:
+      zip_url:
+        description: 'ZIP file URL containing the flatmap data'
+        required: true
+        type: string
+        default: 'https://github.com/hsorby/run-flatmap-maker/releases/download/input/rcl_circuit.zip'
+
+jobs:
+  generate-flatmap:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash -l {0}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Install Ubuntu packages
+        uses: ConorMacBride/install-package@v1
+        with:
+          apt: libfontconfig1 libegl1 libglx-mesa0 libgl1-mesa-dri
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v6
+        with:
+          activate-environment: true
+
+      - name: Install dependencies
+        run: uv sync
+
+      - name: Download zip
+        run: |
+          curl -L "${{ github.event.inputs.zip_url }}" -o file.zip
+          unzip file.zip
+
+      - name: Run mapmaker
+        run: |
+          uv run mapmaker \
+            --output ./flatmaps \
+            --source https://github.com/AnatomicMaps/rat-flatmap.git \
+            --commit curation \
+            --manifest manifest.json \
+            --force \
+            --silent --log mapmaker.log \
+            --no-path-layout \
+            --background-tiles
+        env:
+          SCICRUNCH_API_KEY: ${{ secrets.SCICRUNCH_API_KEY }}
