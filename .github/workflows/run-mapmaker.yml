@@ -1,4 +1,4 @@
-name: mapmaker
+name: Generate flatmap with mapmaker
 
 on:
   workflow_dispatch:
@@ -19,6 +19,10 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v6
+        with:
+          ref: main
+          path: mapmaker
+          repository: AnatomicMaps/flatmap-maker
 
       - name: Install Ubuntu packages
         uses: ConorMacBride/install-package@v1
@@ -31,7 +35,9 @@ jobs:
           activate-environment: true
 
       - name: Install dependencies
-        run: uv sync
+        run: |
+          cd mapmaker
+          uv sync
 
       - name: Download zip
         run: |
