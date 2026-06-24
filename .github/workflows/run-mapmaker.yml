@@ -69,3 +69,10 @@ jobs:
         with:
           name: flatmaps
           path: flatmaps
+
+      - name: Upload log
+        if: failure()
+        uses: actions/upload-artifact@v7
+        with:
+          name: mapmaker-log
+          path: mapmaker.log
