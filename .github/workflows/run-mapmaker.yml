@@ -17,33 +17,14 @@ jobs:
         shell: bash -l {0}
 
     steps:
-      - name: Checkout
-        uses: actions/checkout@v6
-        with:
-          ref: main
-          path: mapmaker
-          repository: AnatomicMaps/flatmap-maker
-
       - name: Set up Python
         uses: actions/setup-python@v6
         with:
           python-version: 3.12
 
-      - name: Install Ubuntu packages
-        uses: ConorMacBride/install-package@v1
-        with:
-          apt: libfontconfig1 libegl1 libglx-mesa0 libgl1-mesa-dri
-
-      - name: Install uv
-        uses: astral-sh/setup-uv@08807647e7069bb48b6ef5acd8ec9567f424441b # v8.1.0
-        with:
-          activate-environment: true
-
-      - name: Install dependencies
+      - name: Install Flatmap Maker
         run: |
-          cd mapmaker
-          uv sync
-          pip install .
+          python -m pip install ${{ vars.REMOTE_MAKER_WHEEL }}
 
       - name: Download zip
         run: |
