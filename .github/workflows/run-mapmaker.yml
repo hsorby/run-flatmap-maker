@@ -55,10 +55,9 @@ jobs:
           mapmaker \
             --output ./flatmaps \
             --source . \
-            --commit production \
             --manifest manifest.json \
             --force \
-            --silent --log mapmaker.log \
+            --log mapmaker.log \
             --no-path-layout \
             --ignore-git \
             --background-tiles
