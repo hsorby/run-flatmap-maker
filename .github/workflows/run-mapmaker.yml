@@ -60,6 +60,7 @@ jobs:
             --force \
             --silent --log mapmaker.log \
             --no-path-layout \
+            --ignore-git \
             --background-tiles
         env:
           SCICRUNCH_API_KEY: ${{ secrets.SCICRUNCH_API_KEY }}
