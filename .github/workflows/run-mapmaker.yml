@@ -35,7 +35,8 @@ jobs:
         run: |
           mapmaker \
             --output ./flatmaps \
-            --source manifest.json \
+            --source . \
+            --manifest manifest.json \
             --force \
             --log mapmaker.log \
             --no-path-layout \
