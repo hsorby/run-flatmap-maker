@@ -54,8 +54,8 @@ jobs:
         run: |
           mapmaker \
             --output ./flatmaps \
-            --source https://github.com/AnatomicMaps/rat-flatmap.git \
-            --commit curation \
+            --source . \
+            --commit production \
             --manifest manifest.json \
             --force \
             --silent --log mapmaker.log \
@@ -63,3 +63,9 @@ jobs:
             --background-tiles
         env:
           SCICRUNCH_API_KEY: ${{ secrets.SCICRUNCH_API_KEY }}
+
+      - name: Upload flatmaps
+        uses: actions/upload-artifact@v7
+        with:
+          name: flatmaps
+          path: flatmaps
