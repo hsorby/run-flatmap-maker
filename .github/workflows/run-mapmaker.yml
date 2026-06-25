@@ -24,6 +24,13 @@ jobs:
           path: mapmaker
           repository: AnatomicMaps/flatmap-maker
 
+      - name: Download zip
+        run: |
+          curl -L "${{ github.event.inputs.zip_url }}" -o file.zip
+          unzip file.zip
+          echo "description.json"
+          cat description.json
+
       - name: Set up Python
         uses: actions/setup-python@v6
         with:
@@ -44,11 +51,6 @@ jobs:
           cd mapmaker
           uv sync
           pip install .
-
-      - name: Download zip
-        run: |
-          curl -L "${{ github.event.inputs.zip_url }}" -o file.zip
-          unzip file.zip
 
       - name: Run mapmaker
         run: |
