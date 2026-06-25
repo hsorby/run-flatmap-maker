@@ -30,6 +30,8 @@ jobs:
           unzip file.zip
           echo "description.json"
           cat description.json
+          echo "manifest.json"
+          cat manifest.json
 
       - name: Set up Python
         uses: actions/setup-python@v6
