@@ -1,0 +1,44 @@
+name: Publish flatmaps using remotemaker
+
+on:
+  workflow_dispatch:
+    inputs:
+      target_branch:
+        description: 'The branch to deploy from'
+        required: true
+        type: string
+      git_url:
+        description: 'The URL of the Git repository'
+        required: true
+        type: string
+      manifest_file:
+        description: 'The path to the manifest file relative to the root of the repository'
+        required: true
+        type: string
+
+jobs:
+  generate-map:
+    runs-on: ubuntu-latest
+    # if: github.repository == 'AnatomicMaps/vagus-nerve-flatmap'
+    steps:
+      - name: Install Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+
+      - name: Install remotemaker
+        run: |
+          python -m pip install ${{ vars.REMOTE_MAKER_WHEEL }}
+
+      - name: run remotemaker
+        run: |
+          server=${{ vars.DEVEL_MAP_SERVER }}
+          commit=${{ inputs.target_branch }}
+          token=${{ secrets.DEVEL_SERVER_TOKEN }}
+
+          python -m remotemaker \
+                 --server $server \
+                 --token $token \
+                 --source ${{ inputs.git_url }} \
+                 --manifest ${{ inputs.manifest_file }} \
+                 --commit $commit
