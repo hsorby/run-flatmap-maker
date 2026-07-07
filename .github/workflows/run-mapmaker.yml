@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
     inputs:
       zip_url:
-        description: 'ZIP file URL containing the flatmap data'
+        description: 'ZIP file URL containing the flatmap data.'
         required: true
         type: string
         default: 'https://github.com/hsorby/run-flatmap-maker/releases/download/input/rcl_circuit.zip'
